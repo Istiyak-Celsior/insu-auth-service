@@ -1,0 +1,107 @@
+package configuration
+
+import (
+	"InsuranceChatWS/internal/db"
+	"InsuranceChatWS/internal/handler"
+	"InsuranceChatWS/internal/hub"
+	"InsuranceChatWS/internal/model"
+	"InsuranceChatWS/internal/repo"
+	"InsuranceChatWS/internal/service"
+	"context"
+	"fmt"
+	"log"
+	"os"
+	"time"
+
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.uber.org/zap"
+)
+
+type Container struct {
+	UserHandler    handler.UserHandler
+	InqueryHandler handler.InqueryHandler
+	Hub            *hub.Hub
+	Config         Config
+	Logger         *zap.Logger
+
+	// private - for cleanup
+	mongoClient *mongo.Database
+}
+
+func BuildContainer() (*Container, error) {
+	// Get config path from environment variable, default to local dev path
+	configPath := "../../shared/config.dev.json"
+	if envPath := os.Getenv("CONFIG_PATH"); envPath != "" {
+		configPath = envPath
+	}
+
+	config, err := LoadConfig(configPath)
+	if err != nil {
+		log.Fatalf("Failed to load config: %v", err)
+	}
+
+	fmt.Printf("Config loaded: %+v\n", config)
+
+	con, err := db.OpenConnection(config.ChatDatabase.Uri, config.ChatDatabase.Database)
+	if err != nil {
+		return nil, err
+	}
+
+	mongoRepo := db.NewRepository[model.Message](con, config.ChatDatabase.MessagesCollection)
+	userMongoRepo := db.NewRepository[model.User](con, config.ChatDatabase.UsersCollection)
+
+	logger, _ := zap.NewProduction()
+
+	messageRepo := repo.NewMessageRepository(con, mongoRepo, logger)
+	conversationRepo := repo.NewConversationRepository(con, logger)
+
+	// user repository, service, handler etc
+	userRepo := repo.NewUserRepository(con, userMongoRepo)
+	userService := service.NewUserService(userRepo, messageRepo)
+	userHandler := handler.NewUserHandler(userService)
+
+	// inquery repository, service, handler etc
+	inqueryHandler := ConfigureInqueryHandler()
+
+	// Create Hub with repositories
+	Hub := hub.NewHub(messageRepo, conversationRepo, userRepo)
+
+	return &Container{
+		UserHandler:    userHandler,
+		InqueryHandler: inqueryHandler,
+		Hub:            Hub,
+		Config:         *config,
+		Logger:         logger,
+		mongoClient:    con,
+	}, nil
+}
+
+func ConfigureInqueryHandler() handler.InqueryHandler {
+	inqueryRepo := repo.NewInqueryRepository()
+	inqueryService := service.NewInqueryService(inqueryRepo)
+	return handler.NewInqueryHandler(inqueryService)
+}
+
+// Close gracefully shuts down all connections
+func (c *Container) Close() error {
+	// Stop the hub first (closes all WebSocket connections)
+	if c.Hub != nil {
+		c.Hub.Stop()
+	}
+
+	// Sync logger
+	if c.Logger != nil {
+		_ = c.Logger.Sync()
+	}
+
+	// Close MongoDB connection pool
+	if c.mongoClient != nil {
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+		if err := c.mongoClient.Client().Disconnect(ctx); err != nil {
+			return fmt.Errorf("failed to close MongoDB connection: %w", err)
+		}
+	}
+
+	return nil
+}

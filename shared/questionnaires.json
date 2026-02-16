@@ -1,0 +1,458 @@
+[
+    {
+        "id": "##basic_profile",
+        "question": "Basic Information",
+        "type": "section_intro",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Step 1/10",
+        "backgroundImage": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=2544&auto=format&fit=crop"
+    },
+    {
+        "id": "full_name",
+        "question": "What is your full name?",
+        "type": "text",
+        "required": true,
+        "is_answered": false,
+        "headerText": "Basic Profile"
+    },
+    {
+        "id": "gender",
+        "question": "What is your gender?",
+        "type": "single_choice",
+        "required": true,
+        "is_answered": false,
+        "headerText": "Basic Profile",
+        "options": ["Male", "Female", "Other", "Prefer not to say"]
+    },
+    {
+        "id": "age_group",
+        "question": "What is your age group?",
+        "type": "single_choice",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Basic Profile",
+        "options": ["Under 18", "18–25", "26–35", "36–45", "46–60", "Above 60"]
+    },
+    {
+        "id": "height_range",
+        "question": "What is your height range?",
+        "type": "single_choice",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Basic Profile",
+        "options": ["Below 150 cm", "150–160 cm", "161–170 cm", "171–180 cm", "Above 180 cm"]
+    },
+    {
+        "id": "weight_range",
+        "question": "What is your weight range?",
+        "type": "single_choice",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Basic Profile",
+        "options": ["Under 50 kg", "50–65 kg", "66–80 kg", "81–95 kg", "Above 95 kg"]
+    },
+    {
+        "id": "##lifestyle",
+        "question": "Lifestyle",
+        "type": "section_intro",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Step 2/10",
+        "backgroundImage": "https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=2670&auto=format&fit=crop"
+    },
+    {
+        "id": "sedentary_lifestyle",
+        "question": "Do you have a sedentary lifestyle with long sitting hours?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Lifestyle"
+    },
+    {
+        "id": "night_shift",
+        "question": "Do you work night shifts or rotating shifts?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Lifestyle"
+    },
+    {
+        "id": "screen_time",
+        "question": "Do you spend more than 6 hours daily on screens?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Lifestyle"
+    },
+    {
+        "id": "##medical_history",
+        "question": "Medical History",
+        "type": "section_intro",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Step 3/10",
+        "backgroundImage": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=2670&auto=format&fit=crop"
+    },
+    {
+        "id": "has_medical_condition",
+        "question": "Do you have any diagnosed medical condition?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Medical History"
+    },
+    {
+        "id": "diabetes",
+        "question": "Have you been diagnosed with diabetes?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Medical History"
+    },
+    {
+        "id": "high_blood_pressure",
+        "question": "Have you been diagnosed with high blood pressure?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Medical History"
+    },
+    {
+        "id": "heart_disease",
+        "question": "Have you been diagnosed with heart disease?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Medical History"
+    },
+    {
+        "id": "thyroid",
+        "question": "Do you have thyroid-related issues?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Medical History"
+    },
+    {
+        "id": "asthma",
+        "question": "Do you have asthma or breathing problems?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Medical History"
+    },
+    {
+        "id": "allergies",
+        "question": "Do you have any known allergies?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Medical History"
+    },
+    {
+        "id": "##current_symptoms",
+        "question": "Current Physical Symptoms",
+        "type": "section_intro",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Step 4/10",
+        "backgroundImage": "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=2680&auto=format&fit=crop"
+    },
+    {
+        "id": "headaches",
+        "question": "Do you experience frequent headaches?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Symptoms"
+    },
+    {
+        "id": "fatigue",
+        "question": "Do you often feel fatigued or low on energy?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Symptoms"
+    },
+    {
+        "id": "chest_pain",
+        "question": "Do you experience chest pain or discomfort?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Symptoms"
+    },
+    {
+        "id": "body_pain",
+        "question": "Do you have frequent body or joint pain?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Symptoms"
+    },
+    {
+        "id": "digestive_issues",
+        "question": "Do you experience digestive issues such as gas or acidity?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Symptoms"
+    },
+    {
+        "id": "low_immunity",
+        "question": "Do you fall sick frequently or feel low immunity?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Symptoms"
+    },
+    {
+        "id": "##mental_sleep",
+        "question": "Mental Health & Sleep",
+        "type": "section_intro",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Step 5/10",
+        "backgroundImage": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=2670&auto=format&fit=crop"
+    },
+    {
+        "id": "stress",
+        "question": "Do you feel stressed most days?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Mental Wellness"
+    },
+    {
+        "id": "anxiety",
+        "question": "Do you experience anxiety or restlessness?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Mental Wellness"
+    },
+    {
+        "id": "low_mood",
+        "question": "Do you feel low or depressed frequently?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Mental Wellness"
+    },
+    {
+        "id": "sleep_less_than_6",
+        "question": "Do you sleep less than 6 hours per night?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Sleep Habits"
+    },
+    {
+        "id": "tired_after_sleep",
+        "question": "Do you wake up tired even after sleeping?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Sleep Habits"
+    },
+    {
+        "id": "##diet",
+        "question": "Diet & Hydration",
+        "type": "section_intro",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Step 6/10",
+        "backgroundImage": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=2653&auto=format&fit=crop"
+    },
+    {
+        "id": "vegetarian",
+        "question": "Do you follow a vegetarian diet?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Diet Analysis"
+    },
+    {
+        "id": "junk_food",
+        "question": "Do you eat junk or fast food more than 3 times a week?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Diet Analysis"
+    },
+    {
+        "id": "water_intake",
+        "question": "Do you drink at least 2–3 liters of water daily?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Hydration"
+    },
+    {
+        "id": "skip_breakfast",
+        "question": "Do you skip breakfast frequently?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Diet Analysis"
+    },
+    {
+        "id": "fruits_veggies",
+        "question": "Do you eat fruits and vegetables daily?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Diet Analysis"
+    },
+    {
+        "id": "##physical_activity",
+        "question": "Physical Activity",
+        "type": "section_intro",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Step 7/10",
+        "backgroundImage": "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2670&auto=format&fit=crop"
+    },
+    {
+        "id": "exercise_regularly",
+        "question": "Do you exercise at least 3 times a week?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Fitness"
+    },
+    {
+        "id": "exercise_type",
+        "question": "What type of physical activity do you engage in?",
+        "type": "multi_choice",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Fitness",
+        "options": ["Walking", "Gym", "Yoga", "Sports", "None"]
+    },
+    {
+        "id": "breathlessness",
+        "question": "Do you feel breathless during mild activity?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Fitness"
+    },
+    {
+        "id": "##habits",
+        "question": "Habits & Addictions",
+        "type": "section_intro",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Step 8/10",
+        "backgroundImage": "https://images.unsplash.com/photo-1527416876370-fb74d128c3dc?q=80&w=2670&auto=format&fit=crop"
+    },
+    {
+        "id": "smoking",
+        "question": "Do you smoke?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Habits"
+    },
+    {
+        "id": "alcohol",
+        "question": "Do you consume alcohol?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Habits"
+    },
+    {
+        "id": "sugary_drinks",
+        "question": "Do you consume sugary drinks frequently?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Habits"
+    },
+    {
+        "id": "caffeine",
+        "question": "Do you consume tea or coffee more than 3 times a day?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Habits"
+    },
+    {
+        "id": "##women_specific",
+        "question": "Women Specific Health",
+        "type": "section_intro",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Step 9/10",
+        "backgroundImage": "https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=2670&auto=format&fit=crop"
+    },
+    {
+        "id": "irregular_periods",
+        "question": "Do you have irregular menstrual cycles?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Women's Health"
+    },
+    {
+        "id": "menstrual_pain",
+        "question": "Do you experience severe menstrual pain?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Women's Health"
+    },
+    {
+        "id": "pcos",
+        "question": "Have you been diagnosed with PCOS or PCOD?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Women's Health"
+    },
+    {
+        "id": "##goals",
+        "question": "Goals & Consent",
+        "type": "section_intro",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Step 10/10",
+        "backgroundImage": "https://images.unsplash.com/photo-1493863641943-9b68992a8d07?q=80&w=2658&auto=format&fit=crop"
+    },
+    {
+        "id": "health_goal",
+        "question": "What is your primary health goal?",
+        "type": "single_choice",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Goals",
+        "options": ["Weight loss", "Weight gain", "Better energy", "Stress reduction", "Better sleep", "General wellness"]
+    },
+    {
+        "id": "open_to_suggestions",
+        "question": "Are you open to lifestyle and diet suggestions?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Goals"
+    },
+    {
+        "id": "under_medical_treatment",
+        "question": "Are you currently under medical treatment?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Goals"
+    },
+    {
+        "id": "consent",
+        "question": "Do you agree that this app provides guidance and not medical diagnosis?",
+        "type": "yes_no",
+        "is_answered": false,
+        "required": true,
+        "headerText": "Consent"
+    }
+]

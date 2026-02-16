@@ -1,0 +1,192 @@
+package repo
+
+import (
+	"InsuranceChatWS/internal/model"
+	"context"
+	"fmt"
+	"time"
+
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.uber.org/zap"
+)
+
+type conversationRepository struct {
+	con    *mongo.Database
+	logger *zap.Logger
+}
+
+type ConversationRepository interface {
+	GetRoomDetail(ctx context.Context, conversationID string) (*model.Conversation, error)
+	UpdateLastMessage(ctx context.Context, id string, lastMessage *model.LastMessage) error
+	UpdateMessageDelivery(ctx context.Context, deliver model.MessageDelivered) error
+}
+
+func NewConversationRepository(mongo *mongo.Database, logger *zap.Logger) ConversationRepository {
+	return &conversationRepository{
+		con:    mongo,
+		logger: logger,
+	}
+}
+
+// GetRoomDetail fetches a conversation document by ID and returns it as a Conversation object
+func (r *conversationRepository) GetRoomDetail(ctx context.Context, conversationID string) (*model.Conversation, error) {
+	if conversationID == "" {
+		return nil, ErrInvalidChannelID
+	}
+
+	// Ensure timeout
+	ctx, cancel := r.ensureTimeout(ctx, defaultReadTimeout)
+	defer cancel()
+
+	// Convert string ID to ObjectID
+	objectID, err := primitive.ObjectIDFromHex(conversationID)
+	if err != nil {
+		r.logger.Error("invalid conversation ID format",
+			zap.String("conversation_id", conversationID),
+			zap.Error(err),
+		)
+		return nil, fmt.Errorf("invalid conversation ID format: %w", err)
+	}
+
+	collection := r.con.Collection("conversations")
+
+	var conversation model.Conversation
+	err = collection.FindOne(ctx, bson.M{"_id": objectID}).Decode(&conversation)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			r.logger.Debug("conversation not found",
+				zap.String("conversation_id", conversationID),
+			)
+			return nil, nil
+		}
+		r.logger.Error("failed to fetch conversation",
+			zap.String("conversation_id", conversationID),
+			zap.Error(err),
+		)
+		return nil, fmt.Errorf("failed to fetch conversation: %w", err)
+	}
+
+	r.logger.Debug("conversation retrieved successfully",
+		zap.String("conversation_id", conversationID),
+		zap.Int("participants_count", len(conversation.Participants)),
+	)
+
+	return &conversation, nil
+}
+
+func (r *conversationRepository) ensureTimeout(ctx context.Context, timeout time.Duration) (context.Context, context.CancelFunc) {
+	if _, hadDeadline := ctx.Deadline(); hadDeadline {
+		return context.WithCancel(ctx)
+	}
+	return context.WithTimeout(ctx, timeout)
+}
+
+// UpdateLastMessage updates the lastMessage content field of a conversation by ID
+func (r *conversationRepository) UpdateLastMessage(ctx context.Context, id string, lastMessage *model.LastMessage) error {
+	if id == "" {
+		return ErrInvalidChannelID
+	}
+
+	ctx, cancel := r.ensureTimeout(ctx, defaultReadTimeout)
+	defer cancel()
+
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		r.logger.Error("invalid conversation ID format",
+			zap.String("conversation_id", id),
+			zap.Error(err),
+		)
+		return fmt.Errorf("invalid conversation ID format: %w", err)
+	}
+
+	collection := r.con.Collection("conversations")
+
+	update := bson.M{
+		"$set": bson.M{
+			"last_message":    lastMessage,
+			"last_message_at": time.Now(),
+			"updated_at":      time.Now(),
+		},
+	}
+
+	result, err := collection.UpdateOne(ctx, bson.M{"_id": objectID}, update)
+	if err != nil {
+		r.logger.Error("failed to update last message",
+			zap.String("conversation_id", id),
+			zap.Error(err),
+		)
+		return fmt.Errorf("failed to update last message: %w", err)
+	}
+
+	if result.MatchedCount == 0 {
+		r.logger.Debug("conversation not found for update",
+			zap.String("conversation_id", id),
+		)
+		return fmt.Errorf("conversation not found: %s", id)
+	}
+
+	r.logger.Debug("last message updated successfully",
+		zap.String("conversation_id", id),
+	)
+
+	return nil
+}
+
+// UpdateLastMessage updates the lastMessage content field of a conversation by ID
+func (r *conversationRepository) UpdateMessageDelivery(ctx context.Context, deliver model.MessageDelivered) error {
+	if deliver.Id == "" {
+		return ErrInvalidChannelID
+	}
+
+	ctx, cancel := r.ensureTimeout(ctx, defaultReadTimeout)
+	defer cancel()
+
+	// Convert string MessageID to ObjectID for querying by _id
+	objectID, err := primitive.ObjectIDFromHex(deliver.Id)
+	if err != nil {
+		r.logger.Error("invalid message ID format",
+			zap.String("message_id", deliver.Id),
+			zap.Error(err),
+		)
+		return fmt.Errorf("invalid message ID format: %w", err)
+	}
+
+	messages := r.con.Collection("messages")
+
+	update := bson.M{
+		"$set": bson.M{
+			"status": deliver.Status,
+		},
+		"$push": bson.M{
+			"receivers": bson.M{
+				"user_id":      deliver.UserId,
+				"delivered_at": deliver.DeliveredAt,
+				"status":       deliver.Status,
+			},
+		},
+	}
+
+	result, err := messages.UpdateOne(ctx, bson.M{"_id": objectID}, update)
+	if err != nil {
+		r.logger.Error("failed to update delivery status",
+			zap.String("message_id", deliver.Id),
+			zap.Error(err),
+		)
+		return fmt.Errorf("failed to update delivery status: %w", err)
+	}
+
+	if result.MatchedCount == 0 {
+		r.logger.Debug("message not found for update",
+			zap.String("message_id", deliver.Id),
+		)
+		return fmt.Errorf("message not found: %s", deliver.Id)
+	}
+
+	r.logger.Debug("delivery status updated successfully",
+		zap.String("message_id", deliver.Id),
+	)
+
+	return nil
+}
